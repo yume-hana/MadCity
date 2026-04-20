@@ -17,7 +17,7 @@ $query = "SELECT p.id, p.title, p.description, p.category, p.state, p.priority, 
           FROM problem p
           JOIN address a ON p.address_id = a.id
           JOIN users u ON p.citizen_id = u.id
-          WHERE p.assigned_to = ? AND p.state IN ('pending', 'in_progress')
+          WHERE FIND_IN_SET(?, p.assigned_to) > 0 AND p.state IN ('pending', 'in_progress')
           ORDER BY p.priority = 'urgent' DESC, p.priority = 'high' DESC, p.created_at ASC";
 
 $stmt = $conn->prepare($query);

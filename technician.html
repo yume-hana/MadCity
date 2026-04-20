@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الفني - MadCity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header bg-primary text-white" style="background-color: var(--primary);">
+            <div class="logo" style="font-size: 1.5rem; color: #fff;">
+                <i class="fa-solid fa-city"></i>
+                <span>بوابة الفني</span>
+            </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="technician.html" class="active"><i class="fa-solid fa-clipboard-check"></i> المهام المسندة</a></li>
+            <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> سجل الإنجازات</a></li>
+            <li><a href="#"><i class="fa-solid fa-comments"></i> رسائل المشرف</a></li>
+        </ul>
+        
+        <div style="padding: 20px;">
+            <a href="index.html" class="btn btn-outline btn-block text-center" style="padding: 10px; font-size: 0.9rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="topvar">
+            <div>
+                <span class="status-badge status-completed"><i class="fa-solid fa-circle"></i> متصل - متاح للعمل</span>
+            </div>
+            <div class="user-profile">
+                <span><strong class="text-primary">خالد - فني صيانة</strong></span>
+                <img src="https://i.pravatar.cc/150?u=tech" alt="Technician">
+            </div>
+        </header>
+
+        <section class="content-area">
+            <h1 class="page-title">مهامي الحالية</h1>
+            
+            <div class="stat-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="stat-card" style="border-left: 5px solid var(--icon-red);">
+                    <div class="stat-icon bg-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <h4>مهام عاجلة</h4>
+                        <h2>1</h2>
+                    </div>
+                </div>
+                <div class="stat-card" style="border-left: 5px solid var(--icon-green);">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-check"></i></div>
+                    <div class="stat-info">
+                        <h4>إنجاز هذا الأسبوع</h4>
+                        <h2>12</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technician Cards View (Better for mobile/field work) -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3>قائمة المهام</h3>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Task 1 -->
+                    <div style="border: 1px solid #E5E7EB; border-radius: var(--border-radius); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                                <span class="status-badge status-progress">جاري التنفيذ</span>
+                                <span class="text-gray" style="font-size: 0.8rem;">#COMP-2023-01</span>
+                            </div>
+                            <h4 style="margin-bottom: 5px;">عطل في إنارة الشارع الرئيسي</h4>
+                            <p class="text-gray" style="font-size: 0.9rem; margin-bottom: 10px;"><i class="fa-solid fa-location-dot text-primary"></i> حي السلام، شارع 40</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn btn-outline" style="padding: 5px 15px;"><i class="fa-solid fa-location-arrow"></i> فتح بالخريطة</button>
+                            <button class="btn btn-primary" style="padding: 5px 15px;"><i class="fa-solid fa-check"></i> إنهاء المهمة</button>
+                        </div>
+                    </div>
+
+                    <!-- Task 2 -->
+                    <div style="border: 1px solid #E5E7EB; border-radius: var(--border-radius); padding: 20px; display: flex; justify-content: space-between; align-items: center; background-color: #FAFAFA;">
+                        <div>
+                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                                <span class="status-badge status-pending">جديدة</span>
+                                <span class="text-gray" style="font-size: 0.8rem;">#COMP-2023-04</span>
+                            </div>
+                            <h4 style="margin-bottom: 5px;">تسرب مياه في الحديقة العامة</h4>
+                            <p class="text-gray" style="font-size: 0.9rem; margin-bottom: 10px;"><i class="fa-solid fa-location-dot text-primary"></i> حديقة الملكية، البوابة الشرقية</p>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button class="btn btn-primary" style="padding: 5px 15px; background-color: var(--icon-yellow); border-color:var(--icon-yellow);"><i class="fa-solid fa-play"></i> بدء العمل</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+</div>
+
+<script src="assets/js/technician.js"></script>
+</body>
+</html>

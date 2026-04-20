@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MadCity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="new-auth-body">
+
+    <div class="auth-card">
+        
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <div class="auth-tabs">
+                <a href="login.html" class="auth-tab">تسجيل الدخول</a>
+                <a href="register.html" class="auth-tab active">إنشاء حساب</a>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right" style="padding-top: 20px;">
+            <div class="auth-icon-wrapper" style="margin-bottom: 10px;">
+                <div class="auth-icon" style="width: 60px; height:60px; font-size: 1.5rem;">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h2 class="auth-title" style="margin-bottom: 20px;">إنشاء حساب</h2>
+            </div>
+            
+            <form id="madcity-register-form" class="auth-form" dir="ltr">
+                <div class="line-input-group" style="margin-bottom: 20px;">
+                    <i class="fa-regular fa-id-card"></i>
+                    <input type="text" id="fullname" name="full_name" placeholder="Full Name" required>
+                </div>
+
+                <div class="line-input-group" style="margin-bottom: 20px;">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                
+                <div class="line-input-group" style="margin-bottom: 20px;">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
+                </div>
+                
+                <div class="line-input-group" style="margin-bottom: 20px;">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <div class="form-footer" style="justify-content: flex-end;">
+                    <button type="submit" class="btn-pill">تسجيل</button>
+                </div>
+            </form>
+
+            <div class="social-login">
+                <span>Or Sign Up With</span>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-google"></i> Google</a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="assets/js/api.js?v=2"></script>
+</body>
+</html>

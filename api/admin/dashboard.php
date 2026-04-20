@@ -17,14 +17,12 @@ $neighborhood = $_GET['neighborhood'] ?? null;
 $priority = $_GET['priority'] ?? null;
 $limit = $_GET['limit'] ?? 50;
 
-$query = "SELECT p.id, p.title, p.description, p.category, p.state, p.priority, p.created_at, p.support_count, p.rating,
+$query = "SELECT p.id, p.title, p.description, p.category, p.state, p.priority, p.created_at, p.support_count, p.rating, p.assigned_to,
                  u.full_name as citizen_name, u.phone as citizen_phone, u.email as citizen_email,
-                 a.street_number, a.street_name, a.neighborhood, a.landmark,
-                 t.full_name as technician_name
+                 a.street_number, a.street_name, a.neighborhood, a.landmark
           FROM problem p
           JOIN users u ON p.citizen_id = u.id
           JOIN address a ON p.address_id = a.id
-          LEFT JOIN users t ON p.assigned_to = t.id
           WHERE 1=1";
 
 $params = [];

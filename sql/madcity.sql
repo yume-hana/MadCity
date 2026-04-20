@@ -37,7 +37,7 @@ CREATE TABLE problem (
     image_url   VARCHAR(255)  NULL,
     citizen_id  INT           NOT NULL,
     address_id  INT           NOT NULL,
-    assigned_to INT           NULL,
+    assigned_to VARCHAR(255)  NULL,
     rating      INT           NULL CHECK (rating >= 1 AND rating <= 5),
     support_count INT        NOT NULL DEFAULT 0,
     solved_at   TIMESTAMP     NULL,
@@ -47,9 +47,7 @@ CREATE TABLE problem (
     CONSTRAINT fk_problem_citizen
         FOREIGN KEY (citizen_id)  REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_problem_address
-        FOREIGN KEY (address_id)  REFERENCES address(id) ON DELETE CASCADE,
-    CONSTRAINT fk_problem_assigned
-        FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL
+        FOREIGN KEY (address_id)  REFERENCES address(id) ON DELETE CASCADE
 );
 
 -- 4. problem_timeline

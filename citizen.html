@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - المواطن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+
+<div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo text-primary" style="font-size: 1.5rem;">
+                <i class="fa-solid fa-city"></i>
+                <span>MadCity</span>
+            </div>
+            <button class="action-btn d-lg-none"><i class="fa-solid fa-times"></i></button>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="citizen.html" class="active"><i class="fa-solid fa-border-all"></i> لوحة التحكم</a></li>
+            <li><a href="#"><i class="fa-solid fa-plus-circle"></i> شكوى جديدة</a></li>
+            <li><a href="#"><i class="fa-solid fa-list-check"></i> قائمة طلباتي</a></li>
+            <li><a href="#"><i class="fa-solid fa-user"></i> حسابي</a></li>
+        </ul>
+        
+        <div style="padding: 20px;">
+            <a href="index.html" class="btn btn-outline btn-block text-center" style="padding: 10px; font-size: 0.9rem;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> تسجيل الخروج
+            </a>
+
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Top Navbar -->
+        <header class="topvar">
+            <div class="search-box input-icon" style="width: 300px;">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="ابحث عن شكوى...">
+            </div>
+            
+            <div class="user-profile">
+                <div class="notifications text-gray" style="font-size: 1.2rem; margin-left: 15px; position: relative;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span style="position: absolute; top: -5px; right: -5px; background: red; height: 10px; width:10px; border-radius: 50%;"></span>
+                </div>
+                <span>أهلاً، <strong class="text-primary">أحمد</strong></span>
+                <img src="https://i.pravatar.cc/150?u=ahmed" alt="User">
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <section class="content-area">
+            <h1 class="page-title">لوحة التحكم السريعة</h1>
+            
+            <!-- Statistics -->
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-yellow"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h4>قيد الانتظار</h4>
+                        <h2>2</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-progress" style="background-color: #3B82F6;"><i class="fa-solid fa-spinner"></i></div>
+                    <div class="stat-info">
+                        <h4>جاري التنفيذ</h4>
+                        <h2>1</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green"><i class="fa-solid fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h4>مكتملة</h4>
+                        <h2>5</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Complaint Form (Hidden by default) -->
+            <div id="new-complaint-section" class="dash-card" style="display: none; animation: slideUp 0.3s ease;">
+                <div class="dash-card-header">
+                    <h3>تقديم شكوى جديدة</h3>
+                    <button class="action-btn" id="hide-complaint-btn"><i class="fa-solid fa-times"></i></button>
+                </div>
+                <form id="complaint-form">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label>عنوان الشكوى</label>
+                            <input type="text" id="comp-title" class="input-icon" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>التصنيف</label>
+                            <select id="comp-category" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px;" required>
+                                <option value="كهرباء">كهرباء وإنارة</option>
+                                <option value="مياه">مياه وصرف صحي</option>
+                                <option value="طرق">طرق وأرصفة</option>
+                                <option value="نظافة">نظافة عامة</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>الحي / المنطقة</label>
+                            <input type="text" id="comp-neighborhood" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px;" required>
+                        </div>
+                        <div class="form-group">
+                            <label>اسم الشارع</label>
+                            <input type="text" id="comp-street" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px;" required>
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>وصف مفصل</label>
+                        <textarea id="comp-desc" rows="4" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">إرسال الشكوى</button>
+                </form>
+            </div>
+
+            <!-- Main Table -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3>أحدث الشكاوى الخاصة بي</h3>
+                    <button id="show-complaint-btn" class="btn btn-primary" style="padding: 8px 15px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> تقديم شكوى</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>رقم الشكوى</th>
+                                <th>العنوان</th>
+                                <th>التاريخ</th>
+                                <th>الحالة</th>
+                                <th>الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#COMP-2023-01</td>
+                                <td>عطل في إنارة الشارع الرئيسي</td>
+                                <td>15 أكتوبر 2026</td>
+                                <td><span class="status-badge status-progress">جاري التنفيذ</span></td>
+                                <td><button class="action-btn"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#COMP-2023-02</td>
+                                <td>تراكم نفايات في الحي الغربي</td>
+                                <td>14 أكتوبر 2026</td>
+                                <td><span class="status-badge status-pending">قيد الانتظار</span></td>
+                                <td><button class="action-btn"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#COMP-2023-03</td>
+                                <td>تصدع في الرصيف</td>
+                                <td>10 أكتوبر 2026</td>
+                                <td><span class="status-badge status-completed">مكتملة</span></td>
+                                <td><button class="action-btn"><i class="fa-solid fa-eye"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            <!-- Review and Rating Section (Always Visible) -->
+            <div class="dash-card mt-4" style="margin-top: 30px;">
+                <div class="dash-card-header">
+                    <h3>تقييم تجربتك مع منصة MadCity</h3>
+                </div>
+                <div style="padding: 10px;">
+                    <form id="citizen-review-form" style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">ما هو تقييمك للخدمة بصفة عامة؟</label>
+                            <div class="star-rating" style="display: flex; gap: 10px; font-size: 1.5rem; color: #ccc; cursor: pointer;">
+                                <i class="fa-solid fa-star" data-rating="1"></i>
+                                <i class="fa-solid fa-star" data-rating="2"></i>
+                                <i class="fa-solid fa-star" data-rating="3"></i>
+                                <i class="fa-solid fa-star" data-rating="4"></i>
+                                <i class="fa-solid fa-star" data-rating="5"></i>
+                            </div>
+                            <input type="hidden" id="review-stars-input" value="0" required>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">أخبرنا برأيك (سيظهر في الصفحة الرئيسية)</label>
+                            <textarea id="review-text-input" rows="3" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px; font-family: inherit;" placeholder="اكتب تعليقك هنا..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="align-self: flex-start;">نشر التقييم العام</button>
+                        <div id="review-success-msg" style="display:none; color: green; font-weight: bold;">تم نشر تقييمك بنجاح وسيظهر في الصفحة الرئيسية! شكراً لك.</div>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Complaint Rating Modal -->
+    <div id="rating-modal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="modal-content" style="background: white; width: 450px; max-width: 90%; border-radius: 15px; padding: 30px; position: relative;">
+            <button id="close-rating-modal" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="color: var(--primary); margin-bottom: 5px; font-weight: 800;">تقييم أداء الشكوى</h3>
+            <p id="rating-complaint-title" style="color: #666; margin-bottom: 20px; font-size: 0.9rem;"></p>
+            
+            <form id="complaint-rating-form" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="hidden" id="rating-complaint-id" required>
+                <div>
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">كيف تقيم استجابة وحل المشكلة؟</label>
+                    <div class="star-rating" style="display: flex; gap: 10px; font-size: 2rem; color: #ccc; cursor: pointer; justify-content: center; margin-bottom: 10px;">
+                        <i class="fa-solid fa-star" data-rating="1"></i>
+                        <i class="fa-solid fa-star" data-rating="2"></i>
+                        <i class="fa-solid fa-star" data-rating="3"></i>
+                        <i class="fa-solid fa-star" data-rating="4"></i>
+                        <i class="fa-solid fa-star" data-rating="5"></i>
+                    </div>
+                    <input type="hidden" id="review-stars-input" value="0" required>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 10px; font-weight: bold;">أضف تعليقاً (اختياري)</label>
+                    <textarea id="review-text-input" rows="3" style="width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 5px; font-family: inherit;" placeholder="رأيك يساعدنا على التحسين..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">إرسال التقييم</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+    <script src="assets/js/main.js?v=3"></script>
+    <script src="assets/js/api.js?v=2"></script>
+</body>
+</html>

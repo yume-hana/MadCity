@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Direction is mixed but we will follow LTR structure as requested by design but localized -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MadCity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="new-auth-body">
+
+    <div class="auth-card">
+        
+        <!-- Left Panel -->
+        <div class="auth-left">
+            <div class="auth-tabs">
+                <a href="login.html" class="auth-tab active">تسجيل الدخول</a>
+                <a href="register.html" class="auth-tab">إنشاء حساب</a>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right">
+            <div class="auth-icon-wrapper">
+                <div class="auth-icon">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <h2 class="auth-title">تسجيل الدخول</h2>
+            </div>
+            
+            <form id="madcity-login-form" class="auth-form" dir="ltr">
+                <div class="line-input-group">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                
+                <div class="line-input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <div class="form-footer">
+                    <a href="#" class="forgot-text">Forgot Password?</a>
+                    <button type="submit" class="btn-pill">دخول</button>
+                </div>
+            </form>
+
+            <div class="social-login">
+                <span>Or Login With</span>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-google"></i> Google</a>
+                    <a href="#"><i class="fa-brands fa-facebook"></i> Facebook</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- The Javascript is crucial to connect to the backend without full reload -->
+    <script src="assets/js/api.js?v=2"></script>
+</body>
+</html>

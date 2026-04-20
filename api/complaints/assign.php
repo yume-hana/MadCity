@@ -12,28 +12,25 @@ if ($user['role'] != 'admin') {
 
 $data = json_decode(file_get_contents("php://input"));
 
-if (!isset($data->complaint_id) || !isset($data->technician_id)) {
-    sendResponse(400, "Missing complaint_id or technician_id");
+if (!isset($data->complaint_id) || !isset($data->technician_ids) || !is_array($data->technician_ids)) {
+    sendResponse(400, "Missing complaint_id or technician_ids array");
 }
 
-// Check if technician exists
-$techQuery = "SELECT id FROM users WHERE id = ? AND role = 'technician'";
-$techStmt = $conn->prepare($techQuery);
-$techStmt->execute([$data->technician_id]);
-
-if ($techStmt->rowCount() == 0) {
-    sendResponse(404, "Technician not found");
+if (count($data->technician_ids) == 0) {
+    sendResponse(400, "Must assign at least one technician");
 }
 
-// Assign technician and change status to in_progress
+$techList = implode(',', $data->technician_ids);
+
+// Assign technicians and change status to in_progress
 $updateQuery = "UPDATE problem SET assigned_to = ?, state = 'in_progress', updated_at = NOW() WHERE id = ?";
 $updateStmt = $conn->prepare($updateQuery);
-$updateStmt->execute([$data->technician_id, $data->complaint_id]);
+$updateStmt->execute([$techList, $data->complaint_id]);
 
 // Add to timeline
 $timelineQuery = "INSERT INTO problem_timeline (problem_id, changed_by, old_state, new_state, note) VALUES (?, ?, 'pending', 'in_progress', ?)";
 $timelineStmt = $conn->prepare($timelineQuery);
-$timelineStmt->execute([$data->complaint_id, $user['id'], "Assigned to technician ID: " . $data->technician_id]);
+$timelineStmt->execute([$data->complaint_id, $user['id'], "Assigned to team: " . $techList]);
 
-sendResponse(200, "Technician assigned successfully");
+sendResponse(200, "Team assigned successfully");
 ?>
