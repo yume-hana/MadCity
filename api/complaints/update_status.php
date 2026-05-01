@@ -25,8 +25,11 @@ if (!$complaint) {
 $allowed = false;
 if ($user['role'] == 'admin') {
     $allowed = true;
-} elseif ($user['role'] == 'technician' && $complaint['assigned_to'] == $user['id']) {
-    $allowed = true;
+} elseif ($user['role'] == 'technician') {
+    $assignedTechs = explode(',', $complaint['assigned_to']);
+    if (in_array($user['id'], $assignedTechs)) {
+        $allowed = true;
+    }
 }
 
 if (!$allowed) {

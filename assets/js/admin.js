@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
         el.innerText = user.full_name;
     });
 
+    const avatarElements = document.querySelectorAll('.user-profile .avatar-circle');
+    avatarElements.forEach(el => {
+        el.innerText = user.full_name ? user.full_name.charAt(0) : 'U';
+    });
+
     // Logout logic
     const logoutBtn = document.querySelector('a[href="index.html"]');
     if (logoutBtn) {
@@ -36,6 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let allTechnicians = [];
     let allComplaints = [];
+    let currentOverviewState = 'all';
+    let currentComplaintsPriority = '';
 
     // UI View Toggling
     const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
@@ -76,6 +83,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Filtering Event Listeners
+    document.querySelectorAll('.stat-filter').forEach(card => {
+        card.addEventListener('click', () => {
+            currentOverviewState = card.getAttribute('data-state');
+            
+            // Visual feedback
+            document.querySelectorAll('.stat-filter').forEach(c => {
+                c.style.transform = 'scale(1)';
+                c.style.boxShadow = 'none';
+            });
+            card.style.transform = 'scale(1.02)';
+            card.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            
+            filterOverview();
+        });
+    });
+
+    const prioritySelect = document.getElementById('priority-filter');
+    if (prioritySelect) {
+        prioritySelect.addEventListener('change', (e) => {
+            currentComplaintsPriority = e.target.value;
+            filterComplaints();
+        });
+    }
+
+    function filterOverview() {
+        let filtered = allComplaints;
+        if (currentOverviewState !== 'all') {
+            filtered = allComplaints.filter(c => c.state === currentOverviewState);
+        }
+        
+        // Update title
+        const titleEl = document.getElementById('overview-table-title');
+        if (titleEl) {
+            if (currentOverviewState === 'pending') titleEl.innerText = 'نظرة عامة على الشكاوى الجديدة';
+            else if (currentOverviewState === 'in_progress') titleEl.innerText = 'نظرة عامة على الشكاوى قيد التنفيذ';
+            else if (currentOverviewState === 'solved') titleEl.innerText = 'نظرة عامة على الشكاوى المحلولة';
+            else titleEl.innerText = 'نظرة عامة على جميع الشكاوى';
+        }
+        
+        renderOverviewTable(filtered);
+    }
+
+    function filterComplaints() {
+        let filtered = allComplaints;
+        if (currentComplaintsPriority) {
+            filtered = allComplaints.filter(c => c.priority === currentComplaintsPriority);
+        }
+        renderComplaintsManagementTable(filtered);
+    }
+
     // Load data
     loadAdminStats();
     loadTechniciansAndComplaints();
@@ -110,14 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Fetch Complaints
-            const compRes = await fetch(`${API_BASE_URL}/admin/dashboard.php`, { 
+            const compRes = await fetch(`${API_BASE_URL}/admin/dashboard.php?limit=100`, { 
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const compData = await compRes.json();
             if (compRes.ok) {
                 allComplaints = compData.data;
-                renderOverviewTable(allComplaints);
-                renderComplaintsManagementTable(allComplaints);
+                filterOverview();
+                filterComplaints();
             }
         } catch (error) {
             console.error("Error loading data:", error);
@@ -190,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
         assignableComplaints.forEach(c => {
             const tr = document.createElement('tr');
             
-            let priorityHtml = getPriorityHtml(c.priority);
             const dateStr = new Date(c.created_at).toLocaleDateString('ar-EG');
 
             // Build Checkbox group for multiple technicians
@@ -219,13 +276,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 </select>
                 <button class="btn btn-outline update-state-btn" data-comp-id="${c.id}" style="padding: 5px 10px; font-size:0.8rem; width:100%;">تحديث الحالة</button>
             `;
+            
+            // Build Priority Update Dropdown
+            let priorityEditHtml = `
+                <select class="input-icon priority-update-select-${c.id}" style="padding:5px; border-radius:5px; border:1px solid #ddd; width:100%; margin-bottom:5px;">
+                    <option value="low" ${c.priority === 'low' ? 'selected' : ''}>منخفضة</option>
+                    <option value="medium" ${c.priority === 'medium' ? 'selected' : ''}>متوسطة</option>
+                    <option value="high" ${c.priority === 'high' || c.priority === 'high ' ? 'selected' : ''}>عالية</option>
+                    <option value="urgent" ${c.priority === 'urgent' ? 'selected' : ''}>عاجلة جداً</option>
+                </select>
+                <button class="btn btn-outline update-priority-btn" data-comp-id="${c.id}" style="padding: 5px 10px; font-size:0.8rem; width:100%;">تحديث الأولوية</button>
+            `;
 
             tr.innerHTML = `
                 <td>#COMP-${c.id}</td>
                 <td>${c.citizen_name}</td>
                 <td>${c.title}</td>
                 <td>${dateStr}</td>
-                <td>${priorityHtml}</td>
+                <td>${priorityEditHtml}</td>
                 <td>
                     ${selectHtml}
                     ${stateHtml}
@@ -322,6 +390,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
+
+        // Event listeners for update priority buttons
+        document.querySelectorAll('.update-priority-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const compId = e.target.getAttribute('data-comp-id');
+                const newPriority = document.querySelector(`.priority-update-select-${compId}`).value;
+                
+                btn.innerText = 'جاري...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(`${API_BASE_URL}/complaints/update_priority.php`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify({
+                            complaint_id: compId,
+                            priority: newPriority
+                        })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok) {
+                        alert('تم تحديث أولوية الشكوى بنجاح!');
+                        loadAdminStats();
+                        loadTechniciansAndComplaints();
+                    } else {
+                        alert('خطأ: ' + (data.message || 'فشل التحديث'));
+                        btn.innerText = 'تحديث الأولوية';
+                        btn.disabled = false;
+                    }
+                } catch (err) {
+                    console.error("Update error", err);
+                    alert('حدث خطأ في الاتصال بالخادم.');
+                    btn.innerText = 'تحديث الأولوية';
+                    btn.disabled = false;
+                }
+            });
+        });
     }
 
     function renderTechniciansTable() {
@@ -330,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
 
         if (!allTechnicians || allTechnicians.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">لا يوجد فنيين حالياً</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center">لا يوجد فنيين حالياً</td></tr>';
             return;
         }
 
@@ -343,8 +452,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${t.email}</td>
                 <td>${t.phone || '-'}</td>
                 <td>${dateStr}</td>
+                <td>
+                    <button class="btn btn-outline-danger delete-tech-btn" data-tech-id="${t.id}" style="padding: 5px 10px; font-size: 0.8rem; color: var(--icon-red); border-color: var(--icon-red);">
+                        <i class="fa-solid fa-trash"></i> حذف
+                    </button>
+                </td>
             `;
             tbody.appendChild(tr);
+        });
+
+        // Event listeners for delete buttons
+        document.querySelectorAll('.delete-tech-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const techId = e.currentTarget.getAttribute('data-tech-id');
+                if (confirm('هل أنت متأكد من رغبتك في حذف هذا الفني؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                    try {
+                        const res = await fetch(`${API_BASE_URL}/admin/techniciansCRUD.php`, {
+                            method: 'DELETE',
+                            headers: { 
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}` 
+                            },
+                            body: JSON.stringify({ id: techId })
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                            alert('تم حذف الفني بنجاح.');
+                            loadTechniciansAndComplaints();
+                        } else {
+                            alert('خطأ: ' + (data.message || 'فشل الحذف'));
+                        }
+                    } catch (error) {
+                        console.error('Delete tech error', error);
+                        alert('حدث خطأ في الاتصال بالخادم.');
+                    }
+                }
+            });
+        });
+    }
+
+    // Event listener for adding a technician
+    const addTechForm = document.getElementById('add-technician-form');
+    if (addTechForm) {
+        addTechForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-add-tech');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري...';
+            btn.disabled = true;
+
+            const newTech = {
+                full_name: document.getElementById('tech-name').value,
+                email: document.getElementById('tech-email').value,
+                password: document.getElementById('tech-password').value,
+                phone: document.getElementById('tech-phone').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/admin/techniciansCRUD.php`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify(newTech)
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('تم إضافة الفني بنجاح!');
+                    addTechForm.reset();
+                    loadTechniciansAndComplaints();
+                } else {
+                    alert('خطأ: ' + (data.message || 'فشل الإضافة'));
+                }
+            } catch (error) {
+                console.error("Add tech error", error);
+                alert('حدث خطأ في الاتصال بالخادم.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         });
     }
 

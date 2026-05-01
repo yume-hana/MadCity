@@ -23,8 +23,8 @@
         </div>
         
         <ul class="sidebar-menu">
-            <li><a href="technician.html" class="active"><i class="fa-solid fa-clipboard-check"></i> المهام المسندة</a></li>
-            <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> سجل الإنجازات</a></li>
+            <li><a href="#" class="active nav-link" data-view="tasks"><i class="fa-solid fa-clipboard-check"></i> المهام المسندة</a></li>
+            <li><a href="#" class="nav-link" data-view="achievements"><i class="fa-solid fa-clock-rotate-left"></i> سجل الإنجازات</a></li>
             <li><a href="#"><i class="fa-solid fa-comments"></i> رسائل المشرف</a></li>
         </ul>
         
@@ -42,8 +42,8 @@
                 <span class="status-badge status-completed"><i class="fa-solid fa-circle"></i> متصل - متاح للعمل</span>
             </div>
             <div class="user-profile">
-                <span><strong class="text-primary">خالد - فني صيانة</strong></span>
-                <img src="https://i.pravatar.cc/150?u=tech" alt="Technician">
+                <span><strong class="text-primary">فني صيانة</strong></span>
+                <div class="avatar-circle"></div>
             </div>
         </header>
 
@@ -51,18 +51,25 @@
             <h1 class="page-title">مهامي الحالية</h1>
             
             <div class="stat-grid" style="grid-template-columns: 1fr 1fr;">
-                <div class="stat-card" style="border-left: 5px solid var(--icon-red);">
+                <div class="stat-card stat-filter" data-filter="urgent" style="border-left: 5px solid var(--icon-red); cursor: pointer; transition: transform 0.2s;">
                     <div class="stat-icon bg-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     <div class="stat-info">
                         <h4>مهام عاجلة</h4>
-                        <h2>1</h2>
+                        <h2 id="urgent-count">0</h2>
                     </div>
                 </div>
-                <div class="stat-card" style="border-left: 5px solid var(--icon-green);">
+                <div class="stat-card stat-filter" data-filter="solved_week" style="border-left: 5px solid var(--icon-green); cursor: pointer; transition: transform 0.2s;">
                     <div class="stat-icon bg-green"><i class="fa-solid fa-check"></i></div>
                     <div class="stat-info">
                         <h4>إنجاز هذا الأسبوع</h4>
-                        <h2>12</h2>
+                        <h2 id="solved-count">0</h2>
+                    </div>
+                </div>
+                <div class="stat-card stat-filter" data-filter="all" style="border-left: 5px solid var(--primary); cursor: pointer; transition: transform 0.2s;">
+                    <div class="stat-icon" style="background-color: var(--primary);"><i class="fa-solid fa-list"></i></div>
+                    <div class="stat-info">
+                        <h4>عرض الكل</h4>
+                        <h2>-</h2>
                     </div>
                 </div>
             </div>
@@ -70,7 +77,7 @@
             <!-- Technician Cards View (Better for mobile/field work) -->
             <div class="dash-card">
                 <div class="dash-card-header">
-                    <h3>قائمة المهام</h3>
+                    <h3 id="list-title">قائمة المهام</h3>
                 </div>
                 
                 <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -113,6 +120,6 @@
 
 </div>
 
-<script src="assets/js/technician.js"></script>
+<script src="assets/js/technician.js?v=3"></script>
 </body>
 </html>

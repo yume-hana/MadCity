@@ -13,7 +13,7 @@ $createTableQuery = "CREATE TABLE IF NOT EXISTS site_reviews (
     comment TEXT NOT NULL,
     avatar_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)";
+)";// hna creat table ta3 review
 $conn->exec($createTableQuery);
 
 $data = json_decode(file_get_contents("php://input"));

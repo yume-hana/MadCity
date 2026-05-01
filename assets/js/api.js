@@ -109,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.innerText = user.full_name;
                 }
             });
+            
+            const avatarElements = document.querySelectorAll('.user-profile .avatar-circle');
+            avatarElements.forEach(el => {
+                el.innerText = user.full_name ? user.full_name.charAt(0) : 'U';
+            });
         } catch(e) {}
     }
 

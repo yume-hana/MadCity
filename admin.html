@@ -43,42 +43,48 @@
         <header class="topvar">
             <h2 style="font-size: 1.2rem; margin:0;">لوحة التحكم الشاملة</h2>
             <div class="user-profile">
-                <span><strong class="text-dark">المدير العام</strong></span>
-                <img src="https://i.pravatar.cc/150?u=admin" alt="Admin">
+                <span>مرحباً، <strong class="text-primary">المدير</strong></span>
+                <div class="avatar-circle"></div>
             </div>
         </header>
 
         <!-- Sections -->
         
-        <!-- 1. Overview View -->
         <section id="overview-view" class="content-area view-section active-view">
             <div class="stat-grid">
-                <div class="stat-card">
+                <div class="stat-card stat-filter" data-state="pending" style="cursor: pointer; transition: transform 0.2s;">
                     <div class="stat-icon bg-yellow"><i class="fa-solid fa-inbox"></i></div>
                     <div class="stat-info">
                         <h4>الشكاوى الجديدة (اليوم)</h4>
                         <h2 id="stat-new">0</h2>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card stat-filter" data-state="in_progress" style="cursor: pointer; transition: transform 0.2s;">
                     <div class="stat-icon" style="background-color: #3B82F6;"><i class="fa-solid fa-hard-hat"></i></div>
                     <div class="stat-info">
                         <h4>قيد التنفيذ</h4>
                         <h2 id="stat-progress">0</h2>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card stat-filter" data-state="solved" style="cursor: pointer; transition: transform 0.2s;">
                     <div class="stat-icon bg-green"><i class="fa-solid fa-check-double"></i></div>
                     <div class="stat-info">
                         <h4>محلولة (هذا الشهر)</h4>
                         <h2 id="stat-solved">0</h2>
                     </div>
                 </div>
+                <div class="stat-card stat-filter" data-state="all" style="cursor: pointer; transition: transform 0.2s; border: 1px solid var(--primary);">
+                    <div class="stat-icon" style="background-color: var(--primary);"><i class="fa-solid fa-list"></i></div>
+                    <div class="stat-info">
+                        <h4>عرض الكل</h4>
+                        <h2>-</h2>
+                    </div>
+                </div>
             </div>
 
             <div class="dash-card">
                 <div class="dash-card-header">
-                    <h3>نظرة عامة على الشكاوى</h3>
+                    <h3 id="overview-table-title">نظرة عامة على جميع الشكاوى</h3>
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="dash-table">
@@ -103,8 +109,15 @@
         <!-- 2. Complaints Management View -->
         <section id="complaints-view" class="content-area view-section" style="display:none;">
             <div class="dash-card">
-                <div class="dash-card-header">
+                <div class="dash-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <h3>إدارة الشكاوى للإسناد</h3>
+                    <select id="priority-filter" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ddd; outline: none;">
+                        <option value="">جميع الأولويات</option>
+                        <option value="urgent">عاجلة جداً</option>
+                        <option value="high">عالية</option>
+                        <option value="medium">متوسطة</option>
+                        <option value="low">منخفضة</option>
+                    </select>
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="dash-table">
@@ -128,6 +141,22 @@
 
         <!-- 3. Technicians Management View -->
         <section id="technicians-view" class="content-area view-section" style="display:none;">
+            <!-- Form to Add New Technician -->
+            <div class="dash-card" style="margin-bottom: 20px;">
+                <div class="dash-card-header">
+                    <h3>إضافة فني جديد</h3>
+                </div>
+                <div style="padding: 20px;">
+                    <form id="add-technician-form" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <input type="text" id="tech-name" placeholder="الاسم الكامل" required style="flex: 1; min-width: 200px; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                        <input type="email" id="tech-email" placeholder="البريد الإلكتروني" required style="flex: 1; min-width: 200px; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                        <input type="password" id="tech-password" placeholder="كلمة المرور" required style="flex: 1; min-width: 200px; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                        <input type="text" id="tech-phone" placeholder="رقم الهاتف" required style="flex: 1; min-width: 200px; padding: 10px; border-radius: 5px; border: 1px solid #ddd;">
+                        <button type="submit" class="btn btn-primary" id="btn-add-tech" style="padding: 10px 20px; white-space: nowrap;"><i class="fa-solid fa-plus"></i> إضافة فني</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="dash-card">
                 <div class="dash-card-header">
                     <h3>قائمة التقنيين</h3>
@@ -141,6 +170,7 @@
                                 <th>البريد الإلكتروني</th>
                                 <th>رقم الهاتف</th>
                                 <th>تاريخ الانضمام</th>
+                                <th>إجراءات</th>
                             </tr>
                         </thead>
                         <tbody id="technicians-tbody">
@@ -180,6 +210,6 @@
 
 </div>
 
-    <script src="assets/js/admin.js"></script>
+    <script src="assets/js/admin.js?v=4"></script>
 </body>
 </html>
